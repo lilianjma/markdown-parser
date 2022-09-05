@@ -9,7 +9,7 @@ public class MarkdownParse {
 
     public static ArrayList<String> getLinks(String markdown) {
         ArrayList<String> toReturn = new ArrayList<>();
-        // find the next [, then find the ], then find the (, then read link upto next )
+        // find the next [, then find the ], then find the (, then read link up to next )
         int currentIndex = 0;
         
         while(currentIndex < markdown.length()) {
@@ -21,32 +21,30 @@ public class MarkdownParse {
 
             if(openBracket >  closeBracket ||
                 openBracket >  openParen ||
-                openBracket >  closeParen){ break; }
+                openBracket >  closeParen) {
+		    break;
+	    }
             
-            if(openBracket == -1 || closeParen == -1){
+            if(openBracket == -1 || closeParen == -1) {
                 break;
             }
             
             if (markdown.substring(openParen + 1, closeParen).length() != 0 &&
                 markdown.substring(closeBracket + 1, openParen).length() == 0 &&
-                !markdown.substring(openParen + 1, closeParen).contains("\n")
-            ){
+                !markdown.substring(openParen + 1, closeParen).contains("\n")) {
                 toReturn.add(markdown.substring(openParen + 1, closeParen));
             }
             
             currentIndex = closeParen + 1;
-            
-            
         }
 
         return toReturn;
     }
 
-
     public static void main(String[] args) throws IOException {
         Path fileName = Path.of(args[0]);
         String content = Files.readString(fileName);
         ArrayList<String> links = getLinks(content);
-	    System.out.println(links);
+	System.out.println(links);
     }
 }
